@@ -86,6 +86,8 @@ public:
 
 	// Derive log level string
 	std::string getloglevelstr(log_level_t level);
+	rloggerSettings& getsettings();
+	void setsettings(rloggerSettings &settings);
 	void setlevelsetting(log_level_t level);
 	void resetlevelsetting(log_level_t level);
 	void setcurrlevel(log_level_t level);

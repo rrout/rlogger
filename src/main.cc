@@ -11,7 +11,7 @@ int main() {
 	rlogger *ilgr = new rlogger();
 	ilgr->init( set );
 
-	set.b_loglevel = LOGDEBUG;
+	set.b_loglevel |= LOGDEBUG;
 
 	RLOG(ilgr) << "Ranjan" << std::endl;
 	RLOG(ilgr) << "Ranjan" << std::endl;
@@ -23,8 +23,12 @@ int main() {
 	_DEBUG << "Ranjan" << std::endl;
 
 
-	//ilgr->resetlevelsetting(LOGERR);
+	ilgr->resetlevelsetting(LOGERR);
 	_ERR << "---------------------------" << std::endl;
+
+	set.b_loglevel |= LOGERR;
+	ilgr->setsettings(set);
+	_ERR << "---------------------------||||||------------------------------" << std::endl;
 
 		rlogger lgr;
 	while (1);

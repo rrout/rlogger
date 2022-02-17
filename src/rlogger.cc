@@ -124,6 +124,17 @@ std::string rlogger::getloglevelstr(log_level_t level)
 	return str;
 }
 
+rloggerSettings& rlogger::getsettings()
+{
+	return this->settings;
+}
+
+void rlogger::setsettings(rloggerSettings &settings)
+{
+	rloggerSettings &set = getsettings();
+	set = settings;
+}
+
 void rlogger::setlevelsetting(log_level_t level)
 {
 	this->settings.b_loglevel |= level;
