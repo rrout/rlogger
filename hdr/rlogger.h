@@ -14,7 +14,7 @@ typedef enum {
 }log_level_t;
 
 #define RLOG(logger)			(*logger << logger->prefix( __FILE__ , __LINE__ ))
-#define RLOG_L(logger, level)	logger->setlevel(level); \
+#define RLOG_L(logger, level)	logger->setcurrlevel(level); \
 									*logger << logger->prefix( __FILE__ , __LINE__ )
 
 #define rlog(level)  			RLOG_L(rlogger::getObj(), level)
@@ -30,7 +30,7 @@ class rloggerSettings
 public:
 	// path to the location of the log file, working directory by default
 	std::string path;
-	// filename, default "owl.log"
+	// filename, default "rlogger.log"
 	std::string filename;
 	// the log file will be overwritten, if false a new log file with the date and time is created
 	bool b_overwriteFile;
@@ -51,12 +51,12 @@ public:
 
 	bool b_tid;
 
-	log_level_t b_loglevel;
+	int32_t b_loglevel;
 
 	rloggerSettings()
 	{
 		this->path = "";
-		this->filename = "owl.log";
+		this->filename = "rlogger.log";
 		this->b_overwriteFile = true;
 		this->b_file = true;
 		this->b_stdout = true;
@@ -65,7 +65,7 @@ public:
 		this->b_module = "";
 		this->b_pid = false;
 		this->b_tid = false;
-		this->b_loglevel = LOGINFO;
+		this->b_loglevel = LOGINFO | LOGERR | LOGDEBUG | LOGCRITICAL | LOGPANIC;
 	}
 };
 
@@ -86,7 +86,10 @@ public:
 
 	// Derive log level string
 	std::string getloglevelstr(log_level_t level);
-	void setlevel(log_level_t level);
+	void setlevelsetting(log_level_t level);
+	void resetlevelsetting(log_level_t level);
+	void setcurrlevel(log_level_t level);
+	bool checklogging();
 
 	// creates the prefix for every line depending on the settings
 	std::string prefix( const std::string& file , const int line );
@@ -94,13 +97,14 @@ public:
 private:
 	static rlogger* obj;
 	bool b_init;
+	log_level_t curr_loglevel;
 	rloggerSettings settings;
 	std::ofstream ofs;
 };
 
 template< typename T > inline rlogger& rlogger::operator<<( T t )
 {
-	if ( this->b_init )
+	if ( this->b_init && checklogging() )
 	{
 		if ( this->settings.b_file ) this->ofs << t;
 		if ( this->settings.b_stdout ) std::cout << t;
@@ -110,7 +114,7 @@ template< typename T > inline rlogger& rlogger::operator<<( T t )
 
 inline rlogger& rlogger::operator<<( std::ostream& (*fun)( std::ostream& ) )
 {
-	if ( this->b_init )
+	if ( this->b_init && checklogging() )
 	{
 		if ( this->settings.b_file ) this->ofs << std::endl;
 		if ( this->settings.b_stdout ) std::cout << std::endl;

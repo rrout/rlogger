@@ -75,7 +75,7 @@ std::string rlogger::prefix( const std::string& file , const int line )
 		else result += ", ";
 	}
 
-	result += this->getloglevelstr(this->settings.b_loglevel);
+	result += this->getloglevelstr(this->curr_loglevel);
 	result += ":";
 
 	if ( !this->settings.b_module.empty() ) 
@@ -124,7 +124,21 @@ std::string rlogger::getloglevelstr(log_level_t level)
 	return str;
 }
 
-void rlogger::setlevel(log_level_t level)
+void rlogger::setlevelsetting(log_level_t level)
 {
-	this->settings.b_loglevel = level;
+	this->settings.b_loglevel |= level;
+}
+
+void rlogger::resetlevelsetting(log_level_t level)
+{
+    this->settings.b_loglevel &= ~(1 << level);
+}
+
+void rlogger::setcurrlevel(log_level_t level)
+{
+    this->curr_loglevel = level;
+}
+bool rlogger::checklogging()
+{
+	return((this->settings.b_loglevel & ( 1 << this->curr_loglevel)) != 0);
 }

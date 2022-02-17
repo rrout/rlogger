@@ -22,6 +22,10 @@ int main() {
 	_ERR << "Ranjan" << std::endl;
 	_DEBUG << "Ranjan" << std::endl;
 
+
+	//ilgr->resetlevelsetting(LOGERR);
+	_ERR << "---------------------------" << std::endl;
+
 		rlogger lgr;
 	while (1);
 
