@@ -1,5 +1,5 @@
 # project name (generate executable with this name)
-TARGET   = Logger
+TARGET   = rlogger
 
 # change these to set the proper directories where each files should be
 SRCDIR   = src
@@ -20,9 +20,12 @@ LDFLAGS  = -pthread
 SOURCES  := $(wildcard $(SRCDIR)/*.cc)
 INCLUDES := $(wildcard $(HDRDIR)/*.h)
 OBJECTS  := $(SOURCES:$(SRCDIR)/%.cc=$(OBJDIR)/%.o)
-rm        = rm -f
+rm        = rm -rf
 
-
+all: $(BINDIR)/$(TARGET)
+	@mkdir -p $(OBJDIR)
+	@mkdir -p $(BINDIR)
+	
 $(BINDIR)/$(TARGET): $(OBJECTS)
 	@$(LINKER) $@ $(LFLAGS) $(LDFLAGS) $(OBJECTS)
 	@echo "Linking complete!"
@@ -31,19 +34,19 @@ $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cc
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "Compiled "$<" successfully!"
 
-.PHONEY: clean
 clean:
 	@$(rm) $(OBJECTS)
+	@$(rm) $(OBJDIR)
 	@echo "Cleanup complete!"
 
-.PHONEY: remove
-remove: clean
+distclean: clean
+	$(rm) $(BINDIR)
 	@$(rm) $(BINDIR)/$(TARGET)
 	@echo "Executable removed!"
 
-.PHONEY: count
 count:
 	find . -type f -name "*.h"|xargs wc -l
 	find . -type f -name "*.cc"|xargs wc -l
 	@echo "Lines of code counted!"
- 
+
+.PHONEY: all clean distclean count

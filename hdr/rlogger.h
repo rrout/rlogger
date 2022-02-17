@@ -17,6 +17,14 @@ typedef enum {
 #define RLOG_L(logger, level)	logger->setlevel(level); \
 									*logger << logger->prefix( __FILE__ , __LINE__ )
 
+#define rlog(level)  			RLOG_L(rlogger::getObj(), level)
+#define _INFO	            	RLOG_L(rlogger::getObj(), LOGINFO)
+#define _ERR					RLOG_L(rlogger::getObj(), LOGERR)
+#define _DEBUG      	        RLOG_L(rlogger::getObj(), LOGDEBUG)
+#define _CRETICAL	           	RLOG_L(rlogger::getObj(), LOGCRITICAL)
+#define _PANIC	             	RLOG_L(rlogger::getObj(), LOGPANIC)
+
+
 class rloggerSettings
 {
 public:
