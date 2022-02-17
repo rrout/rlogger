@@ -104,22 +104,22 @@ std::string rlogger::getloglevelstr(log_level_t level)
 	std::string str;
 	switch (level){
 		case LOGINFO:
-			str = "INFO";
+			str = "INFO    ";
 			break;
 		case LOGERR:
-			str = "ERROR";
+			str = "ERROR   ";
             break;
 		case LOGDEBUG:
-			str = "DEBUG";
+			str = "DEBUG   ";
             break;
 		case LOGCRITICAL:
 			str = "CRITICAL";
             break;
 		case LOGPANIC:
-			str = "PANIC";
+			str = "PANIC   ";
             break;
 		default:
-			str = "UNKNOWN";
+			str = "UNKNOWN ";
 	}
 	return str;
 }

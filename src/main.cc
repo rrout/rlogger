@@ -16,6 +16,12 @@ int main() {
 	RLOG(ilgr) << "Ranjan" << std::endl;
 	RLOG(ilgr) << "Ranjan" << std::endl;
 	RLOG_L(ilgr, LOGERR) << "Ranjan" << std::endl;
+
+	rlog(LOGDEBUG) << "Ranjan" << std::endl;
+	_INFO << "Ranjan" << std::endl;
+	_ERR << "Ranjan" << std::endl;
+	_DEBUG << "Ranjan" << std::endl;
+
 		rlogger lgr;
 	while (1);
 

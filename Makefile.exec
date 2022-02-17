@@ -22,9 +22,7 @@ INCLUDES := $(wildcard $(HDRDIR)/*.h)
 OBJECTS  := $(SOURCES:$(SRCDIR)/%.cc=$(OBJDIR)/%.o)
 rm        = rm -rf
 
-all: $(BINDIR)/$(TARGET)
-	@mkdir -p $(OBJDIR)
-	@mkdir -p $(BINDIR)
+all: $(BINDIR) $(OBJDIR) | $(BINDIR)/$(TARGET) 
 	
 $(BINDIR)/$(TARGET): $(OBJECTS)
 	@$(LINKER) $@ $(LFLAGS) $(LDFLAGS) $(OBJECTS)
@@ -34,13 +32,16 @@ $(OBJECTS): $(OBJDIR)/%.o : $(SRCDIR)/%.cc
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo "Compiled "$<" successfully!"
 
+$(BINDIR) $(OBJDIR):
+	@mkdir -p $@
+
 clean:
 	@$(rm) $(OBJECTS)
 	@$(rm) $(OBJDIR)
 	@echo "Cleanup complete!"
 
 distclean: clean
-	$(rm) $(BINDIR)
+	@$(rm) $(BINDIR)
 	@$(rm) $(BINDIR)/$(TARGET)
 	@echo "Executable removed!"
 
